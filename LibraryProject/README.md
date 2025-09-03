@@ -1,2 +1,0 @@
-# LibraryProject
-PLEASEEEE ACCEPT 
