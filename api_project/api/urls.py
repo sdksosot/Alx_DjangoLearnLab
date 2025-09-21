@@ -1,8 +1,6 @@
-
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from .views import BookList   # هنا بنتأكد إننا مستوردين BookList
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include("api.urls")),  # هنا ربطنا ال api
+    path('books/', BookList.as_view(), name='book-list'),
 ]
