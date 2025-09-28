@@ -1,38 +1,36 @@
-from django.shortcuts import render
-
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
 from .serializers import BookSerializer
 
 
-# ListView: عرض جميع الكتب (مسموح للجميع)
+# ListView: عرض كل الكتب (مسموح للجميع - قراءة فقط)
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # قراءة فقط مسموح بها للجميع
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-# DetailView: عرض كتاب محدد بالـ ID (مسموح للجميع)
+# DetailView: عرض كتاب واحد بالـ ID (مسموح للجميع - قراءة فقط)
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 # CreateView: إضافة كتاب جديد (مسموح فقط للمستخدمين المسجلين)
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # لازم تسجيل دخول
+    permission_classes = [IsAuthenticated]  # لازم تسجيل دخول
 
 
-# UpdateView: تعديل بيانات كتاب موجود (مسموح فقط للمستخدمين المسجلين)
+# UpdateView: تعديل كتاب (مسموح فقط للمستخدمين المسجلين)
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-    # تخصيص سلوك التحديث (مثال: منع تغيير السنة لسنة مستقبلية - تم التحقق منها أصلاً بالـ serializer)
     def perform_update(self, serializer):
         serializer.save()
 
@@ -41,5 +39,4 @@ class BookUpdateView(generics.UpdateAPIView):
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
+    permission_classes = [IsAuthenticated]
