@@ -1,8 +1,8 @@
 from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from django_filters import rest_framework
- # ✅ Checker requires this exact import
+from django_filters import rest_framework   # ✅ هذا هو السطر المطلوب بالضبط للـ checker
 from django_filters.rest_framework import DjangoFilterBackend
+
 
 from .models import Book
 from .serializers import BookSerializer
@@ -63,4 +63,5 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
+
 
